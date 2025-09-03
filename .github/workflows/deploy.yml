@@ -59,7 +59,7 @@ jobs:
 
       - name: Build frontend assets
         run: |
-          docker compose exec -T web chown -R 1001:118 /root/.npm || true
+          docker compose exec -T web rm -rf /root/.npm || true
           docker compose exec -T web npm run prod
 
       - uses: aws-actions/amazon-ecr-login@v2
@@ -94,7 +94,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Upload env file
-        run: aws s3 cp .env.$ENV_NAME s3://shonansurvivors-$SYSTEM_NAME-$ENV_NAME-$SERVICE_NAME-env-file/$IMAGE_TAG/.env
+        run: aws s3 cp .env.$ENV_NAME s3://sns-shonansurvivors-$SYSTEM_NAME-$ENV_NAME-$SERVICE_NAME-env-file/$IMAGE_TAG/.env
         working-directory: backend
 
       - name: Download ecspresso
